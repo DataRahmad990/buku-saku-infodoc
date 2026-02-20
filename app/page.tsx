@@ -73,7 +73,6 @@ export default async function HomePage() {
                 className="object-contain"
               />
             </div>
-            <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
             <div className="bg-white rounded-lg p-2 shadow-md hover:scale-110 transition-transform duration-300 animate-slideInRight">
               <Image
                 src="/ojk.png"
