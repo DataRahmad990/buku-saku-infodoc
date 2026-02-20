@@ -53,36 +53,63 @@ export default async function HomePage() {
       <Header title="Buku Saku Infodoc" />
 
       {/* Hero Banner */}
-      <div className="mx-4 mt-4 bg-gradient-to-br from-ojk-red to-ojk-red-dark rounded-2xl p-5 text-white shadow-lg animate-fadeIn relative overflow-hidden">
+      <div className="mx-4 mt-4 bg-gradient-to-br from-ojk-red via-ojk-red-dark to-ojk-red rounded-2xl p-6 text-white shadow-2xl animate-fadeIn relative overflow-hidden">
         {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 animate-pulse"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 opacity-50 animate-pulse"></div>
+
+        {/* Decorative circles */}
+        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-float"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-ojk-red-light/20 rounded-full blur-3xl"></div>
 
         <div className="relative z-10">
-          {/* Logos */}
-          <div className="flex items-center gap-3 mb-4">
-            <Image
-              src="/kopw.png"
-              alt="KOPW"
-              width={80}
-              height={80}
-              className="drop-shadow-lg animate-slideInLeft"
-            />
-            <Image
-              src="/ojk.png"
-              alt="OJK"
-              width={80}
-              height={80}
-              className="drop-shadow-lg animate-slideInRight"
-            />
+          {/* Logos with dark background container */}
+          <div className="flex items-center justify-center gap-4 mb-5 bg-gradient-to-r from-gray-900/80 via-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/10">
+            <div className="bg-white rounded-lg p-2 shadow-md hover:scale-110 transition-transform duration-300 animate-slideInLeft">
+              <Image
+                src="/kopw.png"
+                alt="KOPW"
+                width={70}
+                height={70}
+                className="object-contain"
+              />
+            </div>
+            <div className="w-px h-16 bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
+            <div className="bg-white rounded-lg p-2 shadow-md hover:scale-110 transition-transform duration-300 animate-slideInRight">
+              <Image
+                src="/ojk.png"
+                alt="OJK"
+                width={70}
+                height={70}
+                className="object-contain"
+              />
+            </div>
           </div>
 
-          <p className="text-sm font-medium opacity-90 mb-1">{greeting} 👋</p>
-          <h2 className="text-xl font-bold leading-tight mb-1">
+          <p className="text-sm font-medium opacity-90 mb-2 flex items-center gap-2">
+            <span className="text-xl animate-bounce">👋</span>
+            <span>{greeting}</span>
+          </p>
+          <h2 className="text-2xl font-bold leading-tight mb-2 tracking-tight">
             Portal Dokumen<br />Internal OJK
           </h2>
-          <p className="text-xs opacity-80 leading-relaxed">
+          <p className="text-xs opacity-90 leading-relaxed mb-3">
             Akses laporan & siaran pers terkini dari satu tempat. Download kapan saja, di mana saja.
           </p>
+
+          {/* Stats row */}
+          <div className="flex items-center gap-3 pt-3 border-t border-white/20">
+            <div className="flex items-center gap-1.5">
+              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <span className="text-[10px] opacity-80">Update otomatis</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <span className="text-[10px] opacity-80">Akses 24/7</span>
+            </div>
+          </div>
         </div>
       </div>
 

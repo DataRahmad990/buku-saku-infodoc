@@ -28,6 +28,9 @@ const config: Config = {
         slideInLeft: "slideInLeft 0.8s ease-out",
         slideInRight: "slideInRight 0.8s ease-out",
         float: "float 3s ease-in-out infinite",
+        bounce: "bounce 1s infinite",
+        shimmer: "shimmer 2s linear infinite",
+        glow: "glow 2s ease-in-out infinite",
       },
       keyframes: {
         fadeIn: {
@@ -45,6 +48,14 @@ const config: Config = {
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-10px)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
+        glow: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(192, 0, 26, 0.3)" },
+          "50%": { boxShadow: "0 0 30px rgba(192, 0, 26, 0.6)" },
         },
       },
     },
