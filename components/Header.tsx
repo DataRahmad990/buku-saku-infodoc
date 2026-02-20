@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 interface HeaderProps {
   title: string;
@@ -10,7 +11,7 @@ interface HeaderProps {
 
 export default function Header({ title, showBack = false, backHref = "/" }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
       <div className="flex items-center gap-3 px-4 py-3 max-w-[430px] mx-auto">
         {showBack && (
           <Link
@@ -23,10 +24,14 @@ export default function Header({ title, showBack = false, backHref = "/" }: Head
           </Link>
         )}
         {!showBack && (
-          <div className="w-9 h-9 flex items-center justify-center">
-            <div className="w-7 h-7 bg-ojk-red rounded-lg flex items-center justify-center">
-              <span className="text-white text-xs font-bold leading-none">OJK</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/kopw.png"
+              alt="KOPW Logo"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
           </div>
         )}
         <h1 className="text-base font-semibold text-gray-800 flex-1 truncate">{title}</h1>

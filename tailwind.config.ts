@@ -23,6 +23,30 @@ const config: Config = {
         card: "0 2px 12px rgba(0,0,0,0.08)",
         "card-hover": "0 4px 20px rgba(192,0,26,0.15)",
       },
+      animation: {
+        fadeIn: "fadeIn 0.6s ease-in-out",
+        slideInLeft: "slideInLeft 0.8s ease-out",
+        slideInRight: "slideInRight 0.8s ease-out",
+        float: "float 3s ease-in-out infinite",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        slideInLeft: {
+          "0%": { opacity: "0", transform: "translateX(-30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        slideInRight: {
+          "0%": { opacity: "0", transform: "translateX(30px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+      },
     },
   },
   plugins: [],

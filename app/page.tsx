@@ -2,6 +2,8 @@ import { supabase, CATEGORIES } from "@/lib/supabase";
 import Header from "@/components/Header";
 import CategoryCard from "@/components/CategoryCard";
 import DocumentCard from "@/components/DocumentCard";
+import AnimatedBackground from "@/components/AnimatedBackground";
+import Image from "next/image";
 import type { Document } from "@/lib/supabase";
 
 async function getCategoryCounts() {
@@ -46,18 +48,42 @@ export default async function HomePage() {
   const greeting = hour < 11 ? "Selamat Pagi" : hour < 15 ? "Selamat Siang" : "Selamat Sore";
 
   return (
-    <main className="pb-24">
+    <main className="pb-24 relative">
+      <AnimatedBackground />
       <Header title="Buku Saku Infodoc" />
 
       {/* Hero Banner */}
-      <div className="mx-4 mt-4 bg-gradient-to-br from-ojk-red to-ojk-red-dark rounded-2xl p-5 text-white shadow-md">
-        <p className="text-sm font-medium opacity-80 mb-1">{greeting} 👋</p>
-        <h2 className="text-xl font-bold leading-tight mb-1">
-          Portal Dokumen<br />Internal OJK
-        </h2>
-        <p className="text-xs opacity-70 leading-relaxed">
-          Akses laporan & siaran pers terkini dari satu tempat. Download kapan saja, di mana saja.
-        </p>
+      <div className="mx-4 mt-4 bg-gradient-to-br from-ojk-red to-ojk-red-dark rounded-2xl p-5 text-white shadow-lg animate-fadeIn relative overflow-hidden">
+        {/* Animated gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-50 animate-pulse"></div>
+
+        <div className="relative z-10">
+          {/* Logos */}
+          <div className="flex items-center gap-3 mb-4">
+            <Image
+              src="/kopw.png"
+              alt="KOPW"
+              width={80}
+              height={80}
+              className="drop-shadow-lg animate-slideInLeft"
+            />
+            <Image
+              src="/ojk.png"
+              alt="OJK"
+              width={80}
+              height={80}
+              className="drop-shadow-lg animate-slideInRight"
+            />
+          </div>
+
+          <p className="text-sm font-medium opacity-90 mb-1">{greeting} 👋</p>
+          <h2 className="text-xl font-bold leading-tight mb-1">
+            Portal Dokumen<br />Internal OJK
+          </h2>
+          <p className="text-xs opacity-80 leading-relaxed">
+            Akses laporan & siaran pers terkini dari satu tempat. Download kapan saja, di mana saja.
+          </p>
+        </div>
       </div>
 
       {/* Categories Section */}
