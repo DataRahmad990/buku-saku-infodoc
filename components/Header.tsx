@@ -28,8 +28,15 @@ export default function Header({ title, showBack = false, backHref = "/" }: Head
             <Image
               src="/kopw.png"
               alt="KOPW Logo"
-              width={36}
-              height={36}
+              width={32}
+              height={32}
+              className="object-contain bg-white rounded p-0.5"
+            />
+            <Image
+              src="/ojk.png"
+              alt="OJK Logo"
+              width={32}
+              height={32}
               className="object-contain bg-white rounded p-0.5"
             />
           </div>
