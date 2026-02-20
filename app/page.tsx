@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import CategoryCard from "@/components/CategoryCard";
 import DocumentCard from "@/components/DocumentCard";
 import AnimatedBackground from "@/components/AnimatedBackground";
-import Image from "next/image";
 import type { Document } from "@/lib/supabase";
 
 async function getCategoryCounts() {
@@ -62,28 +61,6 @@ export default async function HomePage() {
         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-ojk-red-light/20 rounded-full blur-3xl"></div>
 
         <div className="relative z-10">
-          {/* Logos with dark background container */}
-          <div className="flex items-center justify-center gap-4 mb-5 bg-gradient-to-r from-gray-900/80 via-gray-800/80 to-gray-900/80 backdrop-blur-sm rounded-xl p-4 shadow-lg border border-white/10">
-            <div className="bg-white rounded-lg p-2 shadow-md hover:scale-110 transition-transform duration-300 animate-slideInLeft">
-              <Image
-                src="/kopw.png"
-                alt="KOPW"
-                width={70}
-                height={70}
-                className="object-contain"
-              />
-            </div>
-            <div className="bg-white rounded-lg p-2 shadow-md hover:scale-110 transition-transform duration-300 animate-slideInRight">
-              <Image
-                src="/ojk.png"
-                alt="OJK"
-                width={70}
-                height={70}
-                className="object-contain"
-              />
-            </div>
-          </div>
-
           <p className="text-sm font-medium opacity-90 mb-2 flex items-center gap-2">
             <span className="text-xl animate-bounce">👋</span>
             <span>{greeting}</span>
