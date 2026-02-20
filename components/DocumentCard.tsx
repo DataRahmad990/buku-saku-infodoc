@@ -22,16 +22,6 @@ function formatDate(dateString: string) {
   });
 }
 
-function getViewerUrl(fileUrl: string, fileType: string): string {
-  const encoded = encodeURIComponent(fileUrl);
-  if (fileType === "pdf") {
-    // PDF bisa langsung dibuka di browser
-    return fileUrl;
-  }
-  // PPT/PPTX pakai Microsoft Office Online Viewer
-  return `https://view.officeapps.live.com/op/view.aspx?src=${encoded}`;
-}
-
 export default function DocumentCard({ doc }: DocumentCardProps) {
   const fileType = doc.file_type?.toLowerCase() || "default";
   const typeInfo = FILE_ICONS[fileType] || FILE_ICONS.default;
@@ -54,8 +44,14 @@ export default function DocumentCard({ doc }: DocumentCardProps) {
   };
 
   const handleView = () => {
-    const viewUrl = getViewerUrl(doc.file_url, fileType);
-    window.open(viewUrl, "_blank");
+    if (fileType === "pdf") {
+      // PDF pakai flipbook viewer
+      window.open(`/view/${doc.id}`, "_blank");
+    } else {
+      // PPT/PPTX pakai Microsoft Office Online Viewer
+      const encoded = encodeURIComponent(doc.file_url);
+      window.open(`https://view.officeapps.live.com/op/view.aspx?src=${encoded}`, "_blank");
+    }
   };
 
   return (
