@@ -11,12 +11,12 @@ interface HeaderProps {
 
 export default function Header({ title, showBack = false, backHref = "/" }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm transition-colors duration-300">
       <div className="flex items-center gap-3 px-4 py-3 max-w-[430px] mx-auto">
         {showBack && (
           <Link
             href={backHref}
-            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-ojk-red-pale hover:text-ojk-red transition-all duration-200 text-gray-600 active:scale-90"
+            className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-ojk-red-pale dark:hover:bg-ojk-red/20 hover:text-ojk-red transition-all duration-200 text-gray-600 dark:text-gray-300 active:scale-90"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -34,7 +34,7 @@ export default function Header({ title, showBack = false, backHref = "/" }: Head
             />
           </div>
         )}
-        <h1 className="text-base font-bold text-gray-800 flex-1 truncate bg-gradient-to-r from-gray-800 to-ojk-red bg-clip-text text-transparent">{title}</h1>
+        <h1 className="text-base font-bold text-gray-800 dark:text-white flex-1 truncate">{title}</h1>
       </div>
     </header>
   );

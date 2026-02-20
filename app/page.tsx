@@ -115,8 +115,8 @@ export default async function HomePage() {
       {/* Categories Section */}
       <div className="px-4 mt-6">
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-sm font-semibold text-gray-700">Kategori Dokumen</h2>
-          <span className="text-xs text-gray-400">{activeCategories.length} kategori</span>
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Kategori Dokumen</h2>
+          <span className="text-xs text-gray-400 dark:text-gray-500">{activeCategories.length} kategori</span>
         </div>
         <div className="flex flex-col gap-3">
           {activeCategories.map(([key, cat]) => (
@@ -136,8 +136,8 @@ export default async function HomePage() {
       {recentDocs.length > 0 && (
         <div className="px-4 mt-6">
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-semibold text-gray-700">Terbaru</h2>
-            <span className="text-xs text-gray-400">Update otomatis</span>
+            <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300">Terbaru</h2>
+            <span className="text-xs text-gray-400 dark:text-gray-500">Update otomatis</span>
           </div>
           <div className="flex flex-col gap-3">
             {recentDocs.map((doc) => (
@@ -149,10 +149,10 @@ export default async function HomePage() {
 
       {recentDocs.length === 0 && (
         <div className="px-4 mt-6">
-          <div className="bg-white rounded-2xl shadow-card p-8 flex flex-col items-center text-center">
+          <div className="bg-white dark:bg-gray-800/50 rounded-2xl shadow-card p-8 flex flex-col items-center text-center">
             <div className="text-5xl mb-3">📭</div>
-            <p className="text-sm font-medium text-gray-500">Belum ada dokumen</p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Belum ada dokumen</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
               Dokumen akan muncul di sini setelah di-upload oleh admin
             </p>
           </div>
@@ -161,7 +161,7 @@ export default async function HomePage() {
 
       {/* Footer */}
       <div className="px-4 mt-8 pb-2">
-        <p className="text-center text-[10px] text-gray-300">
+        <p className="text-center text-[10px] text-gray-300 dark:text-gray-600">
           Buku Saku Infodoc · Khusus Internal
         </p>
       </div>

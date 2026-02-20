@@ -106,14 +106,14 @@ export default function DocumentCard({ doc, onDelete }: DocumentCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-card border border-gray-50 p-4 relative group hover:shadow-card-hover transition-all duration-300 hover:border-ojk-red/10">
+      <div className="bg-white dark:bg-gray-800/50 dark:backdrop-blur-sm rounded-2xl shadow-card border border-gray-50 dark:border-gray-700/50 p-4 relative group hover:shadow-card-hover transition-all duration-300 hover:border-ojk-red/10 dark:hover:border-ojk-red/40">
         {/* Subtle gradient overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-ojk-red/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-ojk-red/3 dark:from-ojk-red/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl pointer-events-none"></div>
 
         {/* Delete button */}
         <button
           onClick={() => setShowDeleteModal(true)}
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 hover:scale-110 z-10"
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition-all duration-200 hover:scale-110 z-10"
           title="Hapus dokumen"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -129,19 +129,19 @@ export default function DocumentCard({ doc, onDelete }: DocumentCardProps) {
             {typeInfo.icon}
           </div>
           <div className="flex-1 min-w-0 pr-6">
-          <h3 className="font-semibold text-gray-800 text-sm leading-tight line-clamp-2 group-hover:text-ojk-red transition-colors duration-200">{doc.title}</h3>
+          <h3 className="font-semibold text-gray-800 dark:text-white text-sm leading-tight line-clamp-2 group-hover:text-ojk-red dark:group-hover:text-ojk-red-light transition-colors duration-200">{doc.title}</h3>
           <div className="flex items-center gap-2 mt-1.5 flex-wrap">
             <span className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${typeInfo.bg} ${typeInfo.color} shadow-sm`}>
               {fileType !== "default" ? fileType.toUpperCase() : "FILE"}
             </span>
-            <span className="text-[10px] text-gray-400 font-medium">
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium">
               {MONTHS[doc.month]} {doc.year}
             </span>
           </div>
           {doc.description && (
-            <p className="text-xs text-gray-400 mt-1 line-clamp-1">{doc.description}</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-1 line-clamp-1">{doc.description}</p>
           )}
-          <p className="text-[10px] text-gray-300 mt-0.5">Diupload {formatDate(doc.created_at)}</p>
+          <p className="text-[10px] text-gray-300 dark:text-gray-600 mt-0.5">Diupload {formatDate(doc.created_at)}</p>
         </div>
       </div>
 
@@ -149,7 +149,7 @@ export default function DocumentCard({ doc, onDelete }: DocumentCardProps) {
       <div className="flex gap-2 mt-3 relative z-10">
         <button
           onClick={handleView}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border-2 border-ojk-red text-ojk-red text-xs font-bold hover:bg-ojk-red-pale active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl border-2 border-ojk-red dark:border-ojk-red-light text-ojk-red dark:text-ojk-red-light text-xs font-bold hover:bg-ojk-red-pale dark:hover:bg-ojk-red/20 active:scale-95 transition-all duration-200 shadow-sm hover:shadow-md"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -159,7 +159,7 @@ export default function DocumentCard({ doc, onDelete }: DocumentCardProps) {
         </button>
         <button
           onClick={handleDownload}
-          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-ojk-red to-ojk-red-dark text-white text-xs font-bold hover:from-ojk-red-dark hover:to-ojk-red active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl bg-gradient-to-r from-ojk-red to-ojk-red-dark dark:from-ojk-red-light dark:to-ojk-red text-white text-xs font-bold hover:from-ojk-red-dark hover:to-ojk-red dark:hover:from-ojk-red dark:hover:to-ojk-red-light active:scale-95 transition-all duration-200 shadow-md hover:shadow-lg"
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

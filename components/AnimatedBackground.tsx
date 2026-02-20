@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useTheme } from "./ThemeProvider";
 
 export default function AnimatedBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
+    if (theme !== "dark") return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -146,7 +149,9 @@ export default function AnimatedBackground() {
       window.removeEventListener("resize", setCanvasSize);
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, []);
+  }, [theme]);
+
+  if (theme !== "dark") return null;
 
   return (
     <canvas
