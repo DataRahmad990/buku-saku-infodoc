@@ -52,13 +52,11 @@ export default async function HomePage() {
       <Header title="Buku Saku Infodoc" />
 
       {/* Hero Banner */}
-      <div className="mx-4 mt-4 bg-gradient-to-br from-ojk-red via-ojk-red-dark to-ojk-red rounded-2xl p-6 text-white shadow-2xl animate-fadeIn relative overflow-hidden">
-        {/* Animated gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-white/5 opacity-50 animate-pulse"></div>
-
-        {/* Decorative circles */}
-        <div className="absolute -top-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl animate-float"></div>
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-ojk-red-light/20 rounded-full blur-3xl"></div>
+      <div className="mx-4 mt-4 rounded-2xl p-6 text-white shadow-2xl animate-fadeIn relative overflow-hidden min-h-[200px]">
+        {/* Background image */}
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/hero-bg.jpg')" }}></div>
+        {/* Dark overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-ojk-red/80 via-ojk-red-dark/70 to-black/60"></div>
 
         <div className="relative z-10">
           <p className="text-sm font-medium opacity-90 mb-2 flex items-center gap-2">
