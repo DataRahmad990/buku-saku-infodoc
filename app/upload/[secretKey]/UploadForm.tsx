@@ -1,10 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { MONTHS, CATEGORIES } from "@/lib/supabase";
+import { supabase, MONTHS, CATEGORIES } from "@/lib/supabase";
 
 interface UploadFormProps {
   secretKey: string;
+}
+
+function sanitizeFilename(name: string): string {
+  return name.replace(/[^a-zA-Z0-9._-]/g, "_");
 }
 
 export default function UploadForm({ secretKey }: UploadFormProps) {
@@ -17,6 +21,7 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
   });
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
@@ -54,22 +59,53 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
     setErrorMsg("");
 
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("title", form.title);
-      formData.append("category", form.category);
-      formData.append("month", String(form.month));
-      formData.append("year", String(form.year));
-      formData.append("description", form.description);
-      formData.append("secretKey", secretKey);
+      // Step 1: Upload file langsung ke Supabase Storage (bypass Vercel 4.5MB limit)
+      setUploadProgress("Mengupload file...");
+      const timestamp = Date.now();
+      const safeName = sanitizeFilename(file.name);
+      const storagePath = `${form.category}/${form.year}/${String(form.month).padStart(2, "0")}/${timestamp}_${safeName}`;
 
+      const { error: storageError } = await supabase.storage
+        .from("documents")
+        .upload(storagePath, file, {
+          contentType: file.type,
+          upsert: false,
+        });
+
+      if (storageError) {
+        throw new Error(`Upload gagal: ${storageError.message}`);
+      }
+
+      // Step 2: Get public URL
+      const { data: urlData } = supabase.storage
+        .from("documents")
+        .getPublicUrl(storagePath);
+
+      // Step 3: Simpan metadata ke DB via API route (JSON kecil, gak kena limit)
+      setUploadProgress("Menyimpan data...");
       const res = await fetch("/api/upload", {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          secretKey,
+          title: form.title,
+          category: form.category,
+          month: form.month,
+          year: form.year,
+          description: form.description || null,
+          file_url: urlData.publicUrl,
+          file_name: file.name,
+          file_type: file.name.split(".").pop()?.toLowerCase() || "",
+          storage_path: storagePath,
+        }),
       });
 
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Upload gagal");
+      if (!res.ok) {
+        // Rollback: hapus file dari storage kalau metadata gagal
+        await supabase.storage.from("documents").remove([storagePath]);
+        throw new Error(json.error || "Gagal menyimpan data");
+      }
 
       setStatus("success");
       setForm({
@@ -86,6 +122,7 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
       setErrorMsg(err instanceof Error ? err.message : "Terjadi kesalahan");
     } finally {
       setLoading(false);
+      setUploadProgress("");
     }
   };
 
@@ -235,7 +272,7 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
             </svg>
-            Mengupload...
+            {uploadProgress || "Mengupload..."}
           </>
         ) : (
           <>
