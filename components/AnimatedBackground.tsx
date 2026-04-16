@@ -108,13 +108,8 @@ export default function AnimatedBackground() {
 
     // Animation loop
     const animate = () => {
-      // Gradient background
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, "#1a1a2e");
-      gradient.addColorStop(0.5, "#16213e");
-      gradient.addColorStop(1, "#0f1419");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas (transparent so photo behind shows through)
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
       particles.forEach((particle) => {
@@ -154,10 +149,18 @@ export default function AnimatedBackground() {
   if (theme !== "dark") return null;
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 -z-10 pointer-events-none"
-      style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f1419 100%)" }}
-    />
+    <>
+      {/* Team photo background */}
+      <div
+        className="fixed inset-0 -z-20 bg-cover bg-center"
+        style={{ backgroundImage: "url('/hero-bg.jpg')" }}
+      />
+      {/* Dark overlay so particles and text stay readable */}
+      <div className="fixed inset-0 -z-20 bg-black/75" />
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 -z-10 pointer-events-none"
+      />
+    </>
   );
 }

@@ -21,7 +21,7 @@ interface PageData {
 
 const Page = ({ imageUrl, pageNumber }: { imageUrl: string; pageNumber: number }) => {
   return (
-    <div className="relative w-full h-full bg-white flex items-center justify-center shadow-lg">
+    <div className="relative w-full h-full bg-gray-900 flex items-center justify-center shadow-lg">
       {imageUrl ? (
         <img
           src={imageUrl}
