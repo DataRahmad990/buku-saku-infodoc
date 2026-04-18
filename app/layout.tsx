@@ -3,7 +3,6 @@ import "./globals.css";
 import BottomNav from "@/components/BottomNav";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ThemeToggle from "@/components/ThemeToggle";
-import RainEffect from "@/components/RainEffect";
 
 export const metadata: Metadata = {
   title: "Buku Saku Infodoc",
@@ -31,9 +30,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body className="min-h-screen bg-[#F8F8F8] dark:bg-[#1a1a2e] transition-colors duration-300">
+      <body className="min-h-screen">
         <ThemeProvider>
-          <RainEffect />
+          {/* Gradient mesh background */}
+          <div className="mesh-bg" />
           <div className="max-w-[430px] mx-auto min-h-screen relative">
             {children}
             <BottomNav />

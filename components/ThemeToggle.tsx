@@ -8,37 +8,15 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-br from-ojk-red to-ojk-red-dark text-white shadow-lg hover:shadow-xl active:scale-95 transition-all duration-200 flex items-center justify-center group"
+      className="fixed bottom-28 right-4 z-40 w-10 h-10 rounded-2xl bg-[rgb(var(--glass))]/80 backdrop-blur-xl border border-default shadow-soft text-tertiary hover:text-accent hover:border-[rgb(var(--accent))]/25 active:scale-90 transition-all duration-200 flex items-center justify-center"
       aria-label="Toggle theme"
     >
       {theme === "light" ? (
-        // Moon icon for dark mode
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="group-hover:rotate-12 transition-transform duration-300"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
         </svg>
       ) : (
-        // Sun icon for light mode
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="group-hover:rotate-90 transition-transform duration-300"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="12" cy="12" r="5" />
           <line x1="12" y1="1" x2="12" y2="3" />
           <line x1="12" y1="21" x2="12" y2="23" />

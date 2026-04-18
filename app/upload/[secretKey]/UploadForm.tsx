@@ -59,7 +59,6 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
     setErrorMsg("");
 
     try {
-      // Step 1: Upload file langsung ke Supabase Storage (bypass Vercel 4.5MB limit)
       setUploadProgress("Mengupload file...");
       const timestamp = Date.now();
       const safeName = sanitizeFilename(file.name);
@@ -67,21 +66,12 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
 
       const { error: storageError } = await supabase.storage
         .from("documents")
-        .upload(storagePath, file, {
-          contentType: file.type,
-          upsert: false,
-        });
+        .upload(storagePath, file, { contentType: file.type, upsert: false });
 
-      if (storageError) {
-        throw new Error(`Upload gagal: ${storageError.message}`);
-      }
+      if (storageError) throw new Error(`Upload gagal: ${storageError.message}`);
 
-      // Step 2: Get public URL
-      const { data: urlData } = supabase.storage
-        .from("documents")
-        .getPublicUrl(storagePath);
+      const { data: urlData } = supabase.storage.from("documents").getPublicUrl(storagePath);
 
-      // Step 3: Simpan metadata ke DB via API route (JSON kecil, gak kena limit)
       setUploadProgress("Menyimpan data...");
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -102,19 +92,12 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
 
       const json = await res.json();
       if (!res.ok) {
-        // Rollback: hapus file dari storage kalau metadata gagal
         await supabase.storage.from("documents").remove([storagePath]);
         throw new Error(json.error || "Gagal menyimpan data");
       }
 
       setStatus("success");
-      setForm({
-        title: "",
-        category: "siaran_pers",
-        month: new Date().getMonth() + 1,
-        year: new Date().getFullYear(),
-        description: "",
-      });
+      setForm({ title: "", category: "siaran_pers", month: new Date().getMonth() + 1, year: new Date().getFullYear(), description: "" });
       setFile(null);
       if (fileRef.current) fileRef.current.value = "";
     } catch (err: unknown) {
@@ -128,81 +111,72 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
 
   const years = [2024, 2025, 2026, 2027];
 
+  const inputClass = "w-full text-[13px] text-primary bg-recessed border border-default rounded-2xl px-4 py-3 focus:outline-none focus:border-[rgb(var(--accent))] focus:ring-2 focus:ring-[rgb(var(--accent))]/10 transition-all";
+  const labelClass = "block text-[11px] font-bold text-tertiary mb-1.5 uppercase tracking-[0.06em]";
+
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       {status === "success" && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-4 flex items-center gap-3">
-          <span className="text-2xl">✅</span>
+        <div className="glass p-4 flex items-center gap-3 border-emerald-200 dark:border-emerald-900">
+          <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-600">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
           <div>
-            <p className="text-sm font-semibold text-green-700">Upload berhasil!</p>
-            <p className="text-xs text-green-600 mt-0.5">Dokumen sudah tersedia di website.</p>
+            <p className="text-[13px] font-semibold text-emerald-700 dark:text-emerald-400">Upload berhasil!</p>
+            <p className="text-[11px] text-emerald-600/60 mt-0.5">Dokumen sudah tersedia.</p>
           </div>
         </div>
       )}
 
       {(status === "error" || errorMsg) && (
-        <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-3">
-          <span className="text-2xl">❌</span>
-          <p className="text-sm text-red-700">{errorMsg || "Upload gagal, coba lagi."}</p>
+        <div className="glass p-4 flex items-center gap-3 border-rose-200 dark:border-rose-900">
+          <div className="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center flex-shrink-0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-rose-500">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </div>
+          <p className="text-[13px] text-rose-600 dark:text-rose-400">{errorMsg || "Upload gagal."}</p>
         </div>
       )}
 
-      {/* Judul */}
-      <div className="bg-white rounded-2xl shadow-card p-4">
-        <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-          Judul Dokumen *
-        </label>
+      {/* Title */}
+      <div className="glass p-4">
+        <label className={labelClass}>Judul Dokumen *</label>
         <input
           type="text"
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           placeholder="Contoh: Siaran Pers Februari 2026"
           required
-          className="w-full text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ojk-red focus:ring-1 focus:ring-ojk-red/20"
+          className={inputClass}
         />
       </div>
 
-      {/* Kategori + Bulan + Tahun */}
-      <div className="bg-white rounded-2xl shadow-card p-4 flex flex-col gap-3">
+      {/* Category + Month + Year */}
+      <div className="glass p-4 flex flex-col gap-3">
         <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-            Kategori *
-          </label>
-          <select
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="w-full text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ojk-red"
-          >
+          <label className={labelClass}>Kategori *</label>
+          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={inputClass}>
             {Object.entries(CATEGORIES).map(([key, cat]) => (
               <option key={key} value={key}>{cat.label}</option>
             ))}
           </select>
         </div>
-
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-              Bulan *
-            </label>
-            <select
-              value={form.month}
-              onChange={(e) => setForm({ ...form, month: Number(e.target.value) })}
-              className="w-full text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ojk-red"
-            >
+            <label className={labelClass}>Bulan *</label>
+            <select value={form.month} onChange={(e) => setForm({ ...form, month: Number(e.target.value) })} className={inputClass}>
               {Object.entries(MONTHS).map(([num, name]) => (
                 <option key={num} value={num}>{name}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-              Tahun *
-            </label>
-            <select
-              value={form.year}
-              onChange={(e) => setForm({ ...form, year: Number(e.target.value) })}
-              className="w-full text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ojk-red"
-            >
+            <label className={labelClass}>Tahun *</label>
+            <select value={form.year} onChange={(e) => setForm({ ...form, year: Number(e.target.value) })} className={inputClass}>
               {years.map((y) => (
                 <option key={y} value={y}>{y}</option>
               ))}
@@ -211,43 +185,53 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
         </div>
       </div>
 
-      {/* Deskripsi */}
-      <div className="bg-white rounded-2xl shadow-card p-4">
-        <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-          Deskripsi (opsional)
-        </label>
+      {/* Description */}
+      <div className="glass p-4">
+        <label className={labelClass}>Deskripsi (opsional)</label>
         <textarea
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
-          placeholder="Ringkasan singkat isi dokumen..."
+          placeholder="Ringkasan singkat..."
           rows={3}
-          className="w-full text-sm text-gray-800 bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 focus:outline-none focus:border-ojk-red focus:ring-1 focus:ring-ojk-red/20 resize-none"
+          className={`${inputClass} resize-none`}
         />
       </div>
 
       {/* File Upload */}
-      <div className="bg-white rounded-2xl shadow-card p-4">
-        <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
-          File Dokumen * (PDF, PPT, PPTX — maks. 50MB)
-        </label>
+      <div className="glass p-4">
+        <label className={labelClass}>File * (PDF, PPT, PPTX — maks. 50MB)</label>
         <div
           onClick={() => fileRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center text-center cursor-pointer transition-colors ${
-            file ? "border-ojk-red bg-ojk-red-pale" : "border-gray-200 hover:border-ojk-red/40 bg-gray-50"
+          className={`border-2 border-dashed rounded-3xl p-7 flex flex-col items-center text-center cursor-pointer transition-all ${
+            file
+              ? "border-[rgb(var(--accent))]/30 bg-accent-soft"
+              : "border-default hover:border-[rgb(var(--accent))]/20 bg-recessed"
           }`}
         >
-          <span className="text-3xl mb-2">{file ? "📄" : "☁️"}</span>
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-3 ${
+            file ? "bg-[rgb(var(--accent))]/10 text-accent" : "bg-[rgb(var(--surface-1))] border border-default text-quaternary"
+          }`}>
+            {file ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="17 8 12 3 7 8" />
+                <line x1="12" y1="3" x2="12" y2="15" />
+              </svg>
+            )}
+          </div>
           {file ? (
             <>
-              <p className="text-sm font-semibold text-ojk-red">{file.name}</p>
-              <p className="text-xs text-gray-400 mt-0.5">
-                {(file.size / (1024 * 1024)).toFixed(1)} MB
-              </p>
+              <p className="text-[13px] font-semibold text-accent">{file.name}</p>
+              <p className="text-[11px] text-tertiary mt-0.5">{(file.size / (1024 * 1024)).toFixed(1)} MB</p>
             </>
           ) : (
             <>
-              <p className="text-sm font-medium text-gray-500">Tap untuk pilih file</p>
-              <p className="text-xs text-gray-400 mt-0.5">PDF, PPT, atau PPTX</p>
+              <p className="text-[13px] font-medium text-secondary">Tap untuk pilih file</p>
+              <p className="text-[11px] text-quaternary mt-0.5">PDF, PPT, atau PPTX</p>
             </>
           )}
         </div>
@@ -264,7 +248,7 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
       <button
         type="submit"
         disabled={loading || !file || !form.title}
-        className="w-full bg-ojk-red text-white font-semibold py-4 rounded-2xl shadow-md hover:bg-ojk-red-dark active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2"
+        className="w-full bg-[rgb(var(--accent))] text-white font-semibold text-[14px] py-4 rounded-3xl hover:shadow-accent-md active:scale-[0.97] transition-all disabled:opacity-35 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2"
       >
         {loading ? (
           <>
@@ -276,7 +260,7 @@ export default function UploadForm({ secretKey }: UploadFormProps) {
           </>
         ) : (
           <>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
