@@ -302,9 +302,49 @@ export default function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
         </div>
       </div>
 
-      {/* Bottom Toolbar */}
-      <div className="absolute bottom-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-sm px-4 py-3 flex items-center justify-center gap-2 sm:gap-3">
-        {/* Prev */}
+      {/* Floating Zoom Panel (top-right) */}
+      <div className="fixed top-16 right-4 z-50 flex flex-col items-center gap-1 bg-black/60 backdrop-blur-md rounded-2xl p-1.5 shadow-2xl border border-white/10">
+        <button
+          onClick={zoomIn}
+          disabled={zoom >= maxZoom}
+          className="w-10 h-10 rounded-xl bg-white/15 hover:bg-white/25 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all active:scale-95"
+          title="Perbesar (Ctrl +)"
+          aria-label="Perbesar"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="11" y1="8" x2="11" y2="14" />
+            <line x1="8" y1="11" x2="14" y2="11" />
+          </svg>
+        </button>
+
+        <button
+          onClick={zoomReset}
+          className="text-white text-[11px] font-semibold px-1 py-1.5 rounded-lg hover:bg-white/15 w-10 text-center transition-colors"
+          title="Reset zoom (Ctrl 0)"
+          aria-label="Reset zoom"
+        >
+          {Math.round(zoom * 100)}%
+        </button>
+
+        <button
+          onClick={zoomOut}
+          disabled={zoom <= minZoom}
+          className="w-10 h-10 rounded-xl bg-white/15 hover:bg-white/25 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all active:scale-95"
+          title="Perkecil (Ctrl -)"
+          aria-label="Perkecil"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            <line x1="8" y1="11" x2="14" y2="11" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Bottom Toolbar (page nav) */}
+      <div className="absolute bottom-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-sm px-4 py-3 flex items-center justify-center gap-3">
         <button
           onClick={goToPrevPage}
           disabled={currentPage === 0}
@@ -320,7 +360,6 @@ export default function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
           {currentPage + 1} / {totalPages}
         </div>
 
-        {/* Next */}
         <button
           onClick={goToNextPage}
           disabled={currentPage >= totalPages - 1}
@@ -329,47 +368,6 @@ export default function FlipbookViewer({ pdfUrl, title }: FlipbookViewerProps) {
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M9 18l6-6-6-6" />
-          </svg>
-        </button>
-
-        {/* Divider */}
-        <div className="hidden sm:block w-px h-8 bg-white/20 mx-1" />
-
-        {/* Zoom out */}
-        <button
-          onClick={zoomOut}
-          disabled={zoom <= minZoom}
-          className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all active:scale-95"
-          title="Perkecil (Ctrl -)"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            <line x1="8" y1="11" x2="14" y2="11" />
-          </svg>
-        </button>
-
-        {/* Zoom level / reset */}
-        <button
-          onClick={zoomReset}
-          className="text-white text-xs sm:text-sm px-3 py-2 bg-white/10 hover:bg-white/20 rounded-full whitespace-nowrap min-w-[64px] transition-colors"
-          title="Reset zoom (Ctrl 0)"
-        >
-          {Math.round(zoom * 100)}%
-        </button>
-
-        {/* Zoom in */}
-        <button
-          onClick={zoomIn}
-          disabled={zoom >= maxZoom}
-          className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all active:scale-95"
-          title="Perbesar (Ctrl +)"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            <line x1="11" y1="8" x2="11" y2="14" />
-            <line x1="8" y1="11" x2="14" y2="11" />
           </svg>
         </button>
       </div>
