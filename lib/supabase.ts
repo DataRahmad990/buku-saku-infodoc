@@ -24,6 +24,11 @@ export const CATEGORIES: Record<string, { label: string; icon: string; descripti
     icon: "📰",
     description: "Dokumen siaran pers resmi",
   },
+  factsheet: {
+    label: "Factsheet",
+    icon: "📄",
+    description: "Lembar fakta & ringkasan eksekutif",
+  },
   laporan_bulanan: {
     label: "Laporan Bulanan",
     icon: "📊",

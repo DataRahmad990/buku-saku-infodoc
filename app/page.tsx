@@ -38,7 +38,7 @@ export default async function HomePage() {
   ]);
 
   const activeCategories = Object.entries(CATEGORIES).filter(
-    ([key]) => (categoryCounts[key] || 0) > 0 || key === "siaran_pers"
+    ([key]) => (categoryCounts[key] || 0) > 0 || key === "siaran_pers" || key === "factsheet"
   );
 
   const totalDocs = Object.values(categoryCounts).reduce((a, b) => a + b, 0);
